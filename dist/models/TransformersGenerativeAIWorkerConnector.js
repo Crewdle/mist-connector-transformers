@@ -12,6 +12,9 @@ export class TransformersGenerativeAIWorkerConnector {
             await pipeline.dispose();
         }
     }
+    getEngineType() {
+        return 'transformers';
+    }
     async processJob(parameters, options) {
         const pipeline = this.pipelines.get(options.model.id);
         if (!pipeline) {

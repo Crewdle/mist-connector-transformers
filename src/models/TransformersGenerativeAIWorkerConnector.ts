@@ -1,6 +1,6 @@
 import { pipeline, PipelineType } from '@xenova/transformers';
 
-import { IGenerativeAIModel, IGenerativeAIWorkerConnector, IGenerativeAIWorkerOptions, IJobParametersAI, IJobResultAI } from '@crewdle/web-sdk-types';
+import type { GenerativeAIEngineType, IGenerativeAIModel, IGenerativeAIWorkerConnector, IGenerativeAIWorkerOptions, IJobParametersAI, IJobResultAI } from '@crewdle/web-sdk-types';
 
 export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWorkerConnector {
   pipelines: Map<string, any> = new Map();
@@ -16,6 +16,10 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
     for (const pipeline of this.pipelines.values()) {
       await pipeline.dispose();
     }
+  }
+
+  getEngineType(): GenerativeAIEngineType {
+    return 'transformers' as GenerativeAIEngineType;
   }
 
   async processJob(parameters: IJobParametersAI, options: IGenerativeAIWorkerOptions): Promise<IJobResultAI> {
