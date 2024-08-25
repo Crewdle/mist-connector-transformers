@@ -1,4 +1,4 @@
-import { pipeline } from '@xenova/transformers';
+import { pipeline, SummarizationPipeline, TokenClassificationPipeline, TranslationPipeline } from '@xenova/transformers';
 export class TransformersGenerativeAIWorkerConnector {
     pipelines = new Map();
     async initialize(workflowId, models) {
@@ -16,16 +16,40 @@ export class TransformersGenerativeAIWorkerConnector {
         return 'transformers';
     }
     async processJob(parameters, options) {
-        const pipeline = this.pipelines.get(options.model.id);
-        if (!pipeline) {
+        const task = this.pipelines.get(options.model.id);
+        if (!task) {
             throw new Error('Model not found');
         }
-        const output = await pipeline(parameters.prompt);
-        return {
-            output,
-        };
+        if (task instanceof TokenClassificationPipeline) {
+            return {
+                output: await this.processTokenClassificationPipeline(parameters.prompt, task),
+            };
+        }
+        if (task instanceof SummarizationPipeline) {
+            return {
+                output: await this.processSummarizationPipeline(parameters.prompt, task),
+            };
+        }
+        if (task instanceof TranslationPipeline) {
+            return {
+                output: await this.processTranslationPipeline(parameters.prompt, task),
+            };
+        }
+        throw new Error('Task not supported');
     }
     processJobStream(parameters, options) {
         throw new Error('Method not supported.');
+    }
+    async processTokenClassificationPipeline(prompt, task) {
+        const result = await task(prompt);
+        return result.map((r) => r.word);
+    }
+    async processSummarizationPipeline(prompt, task) {
+        const result = await task(prompt);
+        return result[0].summary_text;
+    }
+    async processTranslationPipeline(prompt, task) {
+        const result = await task(prompt);
+        return result[0].translation_text;
     }
 }
