@@ -1,1 +1,2 @@
-export * from './models/TransformersGenerativeAIWorkerConnector';
+import { TransformersGenerativeAIWorkerConnector } from './models/TransformersGenerativeAIWorkerConnector.js';
+export { TransformersGenerativeAIWorkerConnector };
