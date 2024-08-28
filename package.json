@@ -8,6 +8,7 @@
     "build": "rm -r ./dist && tsc",
     "copy-sdk-types": "cp -r ../web-sdk-types/dist ./node_modules/@crewdle/web-sdk-types"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Crewdle/mist-connector-transformers.git"

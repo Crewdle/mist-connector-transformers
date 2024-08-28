@@ -3,6 +3,9 @@ export class TransformersGenerativeAIWorkerConnector {
     pipelines = new Map();
     async initialize(workflowId, models) {
         for (const [modelId, model] of models) {
+            if (model.engineType !== 'transformers') {
+                continue;
+            }
             const task = await pipeline(model.taskType, model.sourceUrl);
             this.pipelines.set(modelId, task);
         }

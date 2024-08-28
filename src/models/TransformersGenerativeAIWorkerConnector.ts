@@ -15,6 +15,9 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
 
   async initialize(workflowId: string, models: Map<string, IGenerativeAIModel>): Promise<void> {
     for (const [modelId, model] of models) {
+      if (model.engineType !== 'transformers') {
+        continue;
+      }
       const task = await pipeline(model.taskType as PipelineType, model.sourceUrl);
       this.pipelines.set(modelId, task);
     }
