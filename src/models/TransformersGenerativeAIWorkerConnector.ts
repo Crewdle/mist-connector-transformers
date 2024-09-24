@@ -7,7 +7,7 @@ import {
   ZeroShotClassificationPipeline, ZeroShotImageClassificationPipeline, ZeroShotObjectDetectionPipeline
 } from '@xenova/transformers';
 
-import { AIJobType, type GenerativeAIEngineType, type IGenerativeAIModel, type IGenerativeAIWorkerConnector, type IGenerativeAIWorkerOptions, type IJobParametersAI, type IJobPromptAIParameters, type IJobPromptParameters, type IJobResultAI, type IPromptResult } from '@crewdle/web-sdk-types';
+import { AIJobType, type GenerativeAIEngineType, type IGenerativeAIModel, type IGenerativeAIWorkerConnector, type IGenerativeAIWorkerOptions, type IGenAIPromptParameters, type IGenAIPromptResult } from '@crewdle/web-sdk-types';
 
 type Tasks = AudioClassificationPipeline | AutomaticSpeechRecognitionPipeline | DepthEstimationPipeline | DocumentQuestionAnsweringPipeline | FeatureExtractionPipeline | FillMaskPipeline | ImageClassificationPipeline | ImageFeatureExtractionPipeline | ImageSegmentationPipeline | ImageToImagePipeline | ImageToTextPipeline | ObjectDetectionPipeline | QuestionAnsweringPipeline | SummarizationPipeline | Text2TextGenerationPipeline | TextClassificationPipeline | TextGenerationPipeline | TextToAudioPipeline | TokenClassificationPipeline | TranslationPipeline | ZeroShotClassificationPipeline | ZeroShotAudioClassificationPipeline | ZeroShotImageClassificationPipeline | ZeroShotObjectDetectionPipeline;
 export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWorkerConnector {
@@ -33,7 +33,7 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
     return 'transformers' as GenerativeAIEngineType;
   }
 
-  async processJob(parameters: IJobPromptAIParameters, options: IGenerativeAIWorkerOptions): Promise<IPromptResult> {
+  async processJob(parameters: IGenAIPromptParameters, options: IGenerativeAIWorkerOptions): Promise<IGenAIPromptResult> {
     const task = this.pipelines.get(options.model.id);
 
     if (!task) {
@@ -64,7 +64,7 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
     throw new Error('Task not supported');
   }
 
-  processJobStream(parameters: IJobPromptAIParameters, options?: IGenerativeAIWorkerOptions): AsyncGenerator<IPromptResult> {
+  processJobStream(parameters: IGenAIPromptParameters, options?: IGenerativeAIWorkerOptions): AsyncGenerator<IGenAIPromptResult> {
     throw new Error('Method not supported.');
   }
 
