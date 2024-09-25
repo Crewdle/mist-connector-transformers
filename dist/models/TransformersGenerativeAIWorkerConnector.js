@@ -1,5 +1,4 @@
 import { pipeline, SummarizationPipeline, TokenClassificationPipeline, TranslationPipeline } from '@xenova/transformers';
-import { AIJobType } from '@crewdle/web-sdk-types';
 export class TransformersGenerativeAIWorkerConnector {
     pipelines = new Map();
     async initialize(workflowId, models) {
@@ -26,19 +25,19 @@ export class TransformersGenerativeAIWorkerConnector {
         }
         if (task instanceof TokenClassificationPipeline) {
             return {
-                type: AIJobType.Prompt,
+                type: 'prompt',
                 output: await this.processTokenClassificationPipeline(parameters.prompt, task),
             };
         }
         if (task instanceof SummarizationPipeline) {
             return {
-                type: AIJobType.Prompt,
+                type: 'prompt',
                 output: await this.processSummarizationPipeline(parameters.prompt, task),
             };
         }
         if (task instanceof TranslationPipeline) {
             return {
-                type: AIJobType.Prompt,
+                type: 'prompt',
                 output: await this.processTranslationPipeline(parameters.prompt, task),
             };
         }

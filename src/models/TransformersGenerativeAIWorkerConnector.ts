@@ -7,7 +7,7 @@ import {
   ZeroShotClassificationPipeline, ZeroShotImageClassificationPipeline, ZeroShotObjectDetectionPipeline
 } from '@xenova/transformers';
 
-import { AIJobType, type GenerativeAIEngineType, type IGenerativeAIModel, type IGenerativeAIWorkerConnector, type IGenerativeAIWorkerOptions, type IGenAIPromptParameters, type IGenAIPromptResult } from '@crewdle/web-sdk-types';
+import { GenerativeAIEngineType, IGenerativeAIModel, IGenerativeAIWorkerConnector, IGenerativeAIWorkerOptions, IGenerativeAIPromptWorkerConnectorParameters, IGenerativeAIWorkerConnectorPromptResult, GenerativeAIWorkerConnectorTypes } from '@crewdle/web-sdk-types';
 
 type Tasks = AudioClassificationPipeline | AutomaticSpeechRecognitionPipeline | DepthEstimationPipeline | DocumentQuestionAnsweringPipeline | FeatureExtractionPipeline | FillMaskPipeline | ImageClassificationPipeline | ImageFeatureExtractionPipeline | ImageSegmentationPipeline | ImageToImagePipeline | ImageToTextPipeline | ObjectDetectionPipeline | QuestionAnsweringPipeline | SummarizationPipeline | Text2TextGenerationPipeline | TextClassificationPipeline | TextGenerationPipeline | TextToAudioPipeline | TokenClassificationPipeline | TranslationPipeline | ZeroShotClassificationPipeline | ZeroShotAudioClassificationPipeline | ZeroShotImageClassificationPipeline | ZeroShotObjectDetectionPipeline;
 export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWorkerConnector {
@@ -33,7 +33,7 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
     return 'transformers' as GenerativeAIEngineType;
   }
 
-  async processJob(parameters: IGenAIPromptParameters, options: IGenerativeAIWorkerOptions): Promise<IGenAIPromptResult> {
+  async processJob(parameters: IGenerativeAIPromptWorkerConnectorParameters, options: IGenerativeAIWorkerOptions): Promise<IGenerativeAIWorkerConnectorPromptResult> {
     const task = this.pipelines.get(options.model.id);
 
     if (!task) {
@@ -42,21 +42,21 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
 
     if (task instanceof TokenClassificationPipeline) {
       return {
-        type: AIJobType.Prompt,
+        type: 'prompt' as GenerativeAIWorkerConnectorTypes,
         output: await this.processTokenClassificationPipeline(parameters.prompt, task),
       };
     }
 
     if (task instanceof SummarizationPipeline) {
       return {
-        type: AIJobType.Prompt,
+        type: 'prompt' as GenerativeAIWorkerConnectorTypes,
         output: await this.processSummarizationPipeline(parameters.prompt, task),
       };
     }
 
     if (task instanceof TranslationPipeline) {
       return {
-        type: AIJobType.Prompt,
+        type: 'prompt' as GenerativeAIWorkerConnectorTypes,
         output: await this.processTranslationPipeline(parameters.prompt, task),
       };
     }
@@ -64,7 +64,7 @@ export class TransformersGenerativeAIWorkerConnector implements IGenerativeAIWor
     throw new Error('Task not supported');
   }
 
-  processJobStream(parameters: IGenAIPromptParameters, options?: IGenerativeAIWorkerOptions): AsyncGenerator<IGenAIPromptResult> {
+  processJobStream(parameters: IGenerativeAIPromptWorkerConnectorParameters, options?: IGenerativeAIWorkerOptions): AsyncGenerator<IGenerativeAIWorkerConnectorPromptResult> {
     throw new Error('Method not supported.');
   }
 
