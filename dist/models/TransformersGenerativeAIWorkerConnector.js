@@ -25,16 +25,19 @@ export class TransformersGenerativeAIWorkerConnector {
         }
         if (task instanceof TokenClassificationPipeline) {
             return {
+                type: 'prompt',
                 output: await this.processTokenClassificationPipeline(parameters.prompt, task),
             };
         }
         if (task instanceof SummarizationPipeline) {
             return {
+                type: 'prompt',
                 output: await this.processSummarizationPipeline(parameters.prompt, task),
             };
         }
         if (task instanceof TranslationPipeline) {
             return {
+                type: 'prompt',
                 output: await this.processTranslationPipeline(parameters.prompt, task),
             };
         }
