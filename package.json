@@ -1,6 +1,6 @@
 {
   "name": "@crewdle/mist-connector-transformers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -24,7 +24,7 @@
     "dist/"
   ],
   "devDependencies": {
-    "@crewdle/web-sdk-types": "^1.0.20",
+    "@crewdle/web-sdk-types": "^1.0.23",
     "@types/node": "^22.5.0",
     "typescript": "^5.5.4"
   },
